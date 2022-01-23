@@ -29,7 +29,6 @@ namespace ProjectileMotion
             double magnitudeAcc = 0;
             double time = 0;
             double t = 0.02;
-            double theta = Math.PI/4;
 
             //level two
             double particleMass = 4; //kg
