@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace ProjectileMotion
 {
@@ -7,55 +7,8 @@ namespace ProjectileMotion
         public static void Main()
         {
             //LevelOne();
-            plotMotion(5, 45);
-            //LevelTwo();
+            LevelTwo();
         }
-
-        public static void plotMotion(double initialVelocity, double angle)
-        {
-            double g = -9.8;
-            double ax=0, ay=0, az=0, magacc=0;
-            double theta = angle;
-            double vx = Math.Cos(theta) * initialVelocity, vy=0, vz=Math.Sin(theta) * initialVelocity;
-            double x=0, y=0, z=0;
-            double time = 0;
-            double t = 0.01;
-            double speed = 0, distance = 0;
-
-            double mass = 4; //kg
-            double C = 0.5; //kg/m
-            double forceGrav, forceAir, newAccel, netForce;
-
-
-            for (time = 0; z >= 0; time+=t) 
-            {
-                Console.WriteLine(time + "\t" + x + "\t" + y + "\t" + z + "\t" + distance + "\t" + vx + "\t" + vy + "\t" + vz + "\t" + speed + "\t" + ax + "\t" + ay + "\t" + az + "\t" + magacc);
-
-                speed = Math.Sqrt(vx * vx + vy * vy + vz * vz);
-                //for air res
-                double xGrav = 0;
-                double zGrav = -9.8;
-                
-                ax = (xGrav * mass - C * speed * vx) / mass;
-                ay = 0;
-                az = (zGrav * mass - C * speed * vz) / mass;
-
-                //not for air res
-                //ax = 0;
-                //ay = 0;
-                //az = g;
-                magacc = Math.Sqrt(ax * ax + ay * ay + az * az);
-                vx = vx + ax * t;
-                vy = vy + ay * t;
-                vz = vz + az * t;
-                speed = Math.Sqrt(vx*vx + vy*vy + vz*vz);
-                x = x + vx * t;
-                y = y + vy * t;
-                z = z + vz * t;
-                distance = Math.Sqrt(x * x + y * y + z * z);
-            }
-        }
-
         public static void LevelOne()
         {
             double initialV = 5;
@@ -77,6 +30,9 @@ namespace ProjectileMotion
             double time = 0;
             double t = 0.02;
 
+
+            Console.WriteLine("time + \t + x + \t + y + \t + z + \t + dist + \t + vx + \t + vy + \t + vz + \t + ax + \t + ay + \t + az + \t + magnitudeAcc + \t + speed");
+
             while (z >= 0)
             {
                 x = initialV * time * Math.Cos(theta); //magnitude of the horizontal component
@@ -88,13 +44,15 @@ namespace ProjectileMotion
                 vx = Math.Cos(theta) * initialV;
                 vz = Math.Sin(theta) * initialV - (time * g * Math.Sign(g)); //initial v component - gravity as time goes on
                 vy = 0;
+                v = Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vz, 2) + Math.Pow(vy, 2)); //calculating magnitude of hypotenuse 
+
 
                 ax = 0;
                 az = g;
                 ay = 0;
 
-                speed = Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vz, 2) + Math.Pow(vy, 2));
-                magnitudeAcc = Math.Sqrt(Math.Pow(ax, 2) + Math.Pow(az, 2) + Math.Pow(ay, 2));
+                speed = v;
+                magnitudeAcc = az;
 
                 time += t;
 
@@ -138,12 +96,12 @@ namespace ProjectileMotion
             //Console.WriteLine("time + \t + x + \t + y + \t + z + \t + dist + \t + vx + \t + vy + \t + vz + \t + ax + \t + ay + \t + az + \t + magnitudeAcc + \t + speed");
             while (z >= 0)
             {
-                //v = Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vz, 2) + Math.Pow(vy, 2));
+                v = Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vz, 2) + Math.Pow(vy, 2));
                 newAccel = (C / particleMass) * (v * v) * Math.Sign(v) * -1;
                 av = newAccel;
                 v = v + (newAccel * t);
 
-                vx = Math.Cos(theta) * v;
+                vx = Math.Cos(theta)*v;
                 vz = Math.Sin(theta) * v - (time * g * Math.Sign(g)); //initial v component - gravity as time goes on
                 vy = 0;
 
@@ -160,7 +118,7 @@ namespace ProjectileMotion
                 ay = 0;
 
                 speed = Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vz, 2) + Math.Pow(vy, 2));
-                magnitudeAcc = av * Math.Sign(av);
+                magnitudeAcc = av;
 
                 time += t;
 

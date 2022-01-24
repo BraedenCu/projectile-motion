@@ -8,4 +8,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Utility">
+      <HintPath>..\..\Utility\Utility\obj\Debug\net6.0\Utility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
