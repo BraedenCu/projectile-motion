@@ -6,8 +6,8 @@ namespace ProjectileMotion
     {
         public static void Main()
         {
-            LevelOne();
-            //LevelTwo();
+            //LevelOne();
+            LevelTwo();
         }
         public static void LevelOne()
         {
@@ -21,7 +21,7 @@ namespace ProjectileMotion
             double theta = Math.PI / 4;
             double vx = Math.Cos(theta) * initialV;
             double vy = 0;
-            double vz = Math.Sin(theta) * initialV; ;
+            double vz = Math.Sin(theta) * initialV;
             double speed = v;
             double ax = 0;
             double ay = 0;
@@ -30,35 +30,21 @@ namespace ProjectileMotion
             double time = 0;
             double t = 0.02;
 
-            //level two
-            double particleMass = 4; //kg
-            double C = 0.5; //kg/m
-            double forceGrav;
-            double forceAir;
-            double newAccel;
 
             Console.WriteLine("time + \t + x + \t + y + \t + z + \t + dist + \t + vx + \t + vy + \t + vz + \t + ax + \t + ay + \t + az + \t + magnitudeAcc + \t + speed");
 
             while (z >= 0)
             {
-                x = initialV * time * Math.Cos(theta);
+                x = initialV * time * Math.Cos(theta); //magnitude of the horizontal component
                 y = 0;
-                z = (initialV * time * Math.Sin(theta)) - Math.Sign(g) * (0.5 * g * Math.Pow(time, 2));
-                
+                z = (initialV * time * Math.Sin(theta)) - Math.Sign(g) * (0.5 * g * Math.Pow(time, 2)); //magnitude of vertical component - velocity due to accel due to gravity
+
                 dist = x;
 
-                //level two shit
-                forceAir = C * (v * v);
-                forceGrav = particleMass * g;
-                ax = (-1 * forceAir * Math.Sign(v) + forceGrav) / particleMass;
-
-                //vx = Math.Cos(theta)*initialV;
-                vz = Math.Sin(theta)* initialV - (time * g * Math.Sign(g)); //initial v component - gravity as time goes on
+                vx = Math.Cos(theta) * initialV;
+                vz = Math.Sin(theta) * initialV - (time * g * Math.Sign(g)); //initial v component - gravity as time goes on
                 vy = 0;
-                v = Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vz, 2) + Math.Pow(vy, 2));
-
-                //level two shit
-                vx = vx + (ax * t);
+                v = Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vz, 2) + Math.Pow(vy, 2)); //calculating magnitude of hypotenuse 
 
 
                 ax = 0;
@@ -79,10 +65,67 @@ namespace ProjectileMotion
 
         public static void LevelTwo()
         {
+            double initialV = 5;
+            double v = initialV;
+            double g = -9.8;
+            double y = 0;
+            double x = 0;
+            double z = 0;
+            double dist = 0;
+            double theta = Math.PI / 4;
+            double vx = Math.Cos(theta) * initialV;
+            double vy = 0;
+            double vz = Math.Sin(theta) * initialV;
+            double speed = v;
+            double ax = 0;
+            double ay = 0;
+            double az = 0;
+            double av = 0; //acceleration of magnitude vector
+            double magnitudeAcc = 0;
+            double time = 0;
+            double t = 0.01;
 
-         
+            //level two
+            double particleMass = 4; //kg
+            double C = 0.5; //kg/m
+            double forceGrav;
+            double forceAir;
+            double newAccel;
+            double netForce;
 
+            //Console.WriteLine("time + \t + x + \t + y + \t + z + \t + dist + \t + vx + \t + vy + \t + vz + \t + ax + \t + ay + \t + az + \t + magnitudeAcc + \t + speed");
+            while (z >= 0)
+            {
+                newAccel = (C / particleMass) * (v * v) * Math.Sign(v) * -1;
+                av = newAccel;
+                v = v + (newAccel * t);
 
+                vx = Math.Cos(theta)*v;
+                vz = Math.Sin(theta) * v - (time * g * Math.Sign(g)); //initial v component - gravity as time goes on
+                vy = 0;
+
+                //Console.WriteLine(newAccel + "\t" + v);
+
+                x = x + vx * t;
+                y = y + vy * t;
+                z = z + vz * t;
+
+                dist = x;
+
+                ax = 0;
+                az = g;
+                ay = 0;
+
+                speed = Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vz, 2) + Math.Pow(vy, 2));
+                magnitudeAcc = av;
+
+                time += t;
+
+                if (z >= 0)
+                {
+                    Console.WriteLine(time + "\t" + x + "\t" + y + "\t" + z + "\t" + dist + "\t" + vx + "\t" + vy + "\t" + vz + "\t" + ax + "\t" + ay + "\t" + az + "\t" + magnitudeAcc + "\t" + speed);
+                }
+            }
         }
     }
 }
